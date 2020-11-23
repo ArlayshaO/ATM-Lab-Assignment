@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ATM lab</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Asap&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width">
+
+</head>
+
+<body>
+    <br>
+    <div class="container-fluid">
+    <div>
+        <img class="head-image" src="A Basic bank header.png">
+    </div>
+    <br>
+    <div id="start"> 
+        <label>Login To Your Account:</label>
+        <input id="pinput" placeholder="Enter your Pin Here"></input>
+        <button onclick="login()">Submit</button>
+        <p id="account"></p>
+
+        <label>New Account:</label>
+        <input id="newpinput"></input>
+        <button onclick="newAccount()">Submit</button>
+    </div>
+
+    <div id="menu" style="display:none"> 
+        <button onclick="displayBalance()">Get Balance</button>
+        <p id="balance"></p>
+
+        <button onclick="displayWithdrawal()">Withdrawal</button>
+        <p id="wbalance"></p>
+        <!-- implement this: add button for returning to main menu -->
+        <button onclick="getElementById()"> Main Menu</button>
+        <p id="start"></p>
+        </div><!---check on this-->
+<br>
+<br>
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="container">
+        <div class="test-account-info"><img src="test account info (1).png"></div>
+      <div class="copyright"><strong>Copyright Arlaysha Osborn 2020</strong>
+      </div>
+      <div class="credits">
+       <p>Designed by Arlaysha O</p>
+      </div>
+    </div>
+  </footer><!-- End  Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+
+<!----------------------------script-->
+    <script>
+        //bank account 
+        //create a new ATM instance when the page loads
+        let atm = new Atm(); 
+
+        function Atm() {
+            this.accounts = [];
+            this.currentAccount = null; //this is the account we are currently into-new or existing
+        
+            this.createAccount = function (pin){
+                let newAccount = new Account(pin);
+                this.accounts.push(newAccount);
+                this.currentAccount = newAccount; 
+                return newAccount; 
+            };
+
+            this.getAccount = function (pin){
+                for (let i = 0; i < this.accounts.length; i++) {
+                    if (this.accounts[i].pin === pin) {
+                        //return the bank account that matches our pin
+                        this.currentAccount = this.accounts[i]; 
+                        return this.accounts[i];
+                    }
+                }
+                return null; 
+            }; 
+
+            //settings for this atm for the future?
+            this.configuration = {};
+
+       
+        }
+
+        function Account(pin) { 
+            this.pin = pin;
+            this.balance = 0;
+            
+            //getBalance 
+            this.getBalance = function(){
+                    return(this.balance); 
+            }
+
+            //withdrawal
+            this.withdrawal = function(){
+                //implement this 
+                var withdrawal = parseFloat(prompt('How much would you like to withdraw?'));
+		if (isNaN(withdrawal) || withdrawal === '') {
+			alert('Error: please enter a number');
+			make_withdrawal();
+		} else {
+			this.balance -= this.withdrawal;
+			get_balance();
+		}
+                
+                
+            }
+
+            //deposit 
+            this.deposit = function(){
+                //this implement this 
+            }
+
+        }
+
+        function returnToMenu(){
+            //implement this 
+        }
+
+        function displayBalance() {
+            //we need a pin 
+            document.getElementById("balance").innerHTML = 
+            atm.currentAccount.balance; 
+        }
+
+        //UI side/display logic 
+        function newAccount(){
+                let pin = parseInt(document.getElementById("newpinput").value);
+                atm.createAccount(pin);
+                //display menu
+                displayMenu(); 
+
+            }
+
+        function login() {
+            let pin = parseInt(document.getElementById("pinput").value);
+            //if we find a pin, do something, open a menu or whatever and exit
+            //the get account function 
+            atm.getAccount(pin);
+            if( atm.currentAccount === null){
+                //if the account doesn't, create with that pin
+                alert("Invalid PIN!"); 
+            } else {
+                displayMenu(); 
+            }
+            //document.getElementById("account").innerHTML = "pin: " + acct.pin + "<br>" + "balance: " + acct.balance; 
+            return;
+        }
+
+        function displayMenu(){
+            //display menu 
+            document.getElementById("start").style.display = "none";
+            document.getElementById("menu").style.display = "block";
+        }
+    </script>
+
+
+</div>
+</body>
+
+</html>
